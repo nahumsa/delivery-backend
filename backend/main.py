@@ -1,6 +1,8 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-import models, database
+from sqlalchemy.exc import IntegrityError
+import models
+import database
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.shape import to_shape
 from shapely.geometry import mapping
@@ -28,8 +30,18 @@ def create_partner(
         address=WKTElement(partner.address.wkt, srid=4326),
     )
     db.add(db_partner)
-    db.commit()
-    db.refresh(db_partner)
+    try:
+        db.commit()
+        db.refresh(db_partner)
+    except IntegrityError as e:
+        db.rollback()
+        if "duplicate key value violates unique constraint" in str(e):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Document already exists.",
+            )
+        raise
+
     return models.Partner(
         id=db_partner.id,
         trading_name=db_partner.trading_name,
