@@ -49,5 +49,5 @@ jobs:
           DB_HOST: localhost
           DB_PORT: 5432
           DB_NAME: gis_db
-        run: ~/.cargo/bin/uv run pytest
+        run: uv run pytest
 
