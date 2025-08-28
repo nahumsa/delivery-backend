@@ -34,13 +34,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Install dependencies
-        run: ~/.cargo/bin/uv sync
+        run: uv sync
 
       - name: Run tests
         env:
@@ -50,3 +50,4 @@ jobs:
           DB_PORT: 5432
           DB_NAME: gis_db
         run: ~/.cargo/bin/uv run pytest
+
