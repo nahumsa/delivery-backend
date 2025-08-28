@@ -1,0 +1,37 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./database/Dockerfile
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=gis_db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d gis_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - db_user=user
+      - db_password=password
+      - db_host=db
+      - db_port=5432
+      - db_name=gis_db
+
+volumes:
+  postgres_data:

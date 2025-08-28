@@ -1,0 +1,5 @@
+FROM postgis/postgis:16-3.4
+
+ENV POSTGRES_DB=gis_db
+ENV POSTGRES_USER=user
+ENV POSTGRES_PASSWORD=password
