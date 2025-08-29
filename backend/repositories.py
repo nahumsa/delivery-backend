@@ -32,10 +32,10 @@ class PartnerRepository:
             raise e from e
 
         return Partner(
-        id=db_partner.id,
-        trading_name=db_partner.trading_name,
-        owner_name=db_partner.owner_name,
-        document=db_partner.document,
-        coverage_area=mapping(to_shape(db_partner.coverage_area)),
-        address=mapping(to_shape(db_partner.address)),
-    )
+            id=db_partner.id,
+            trading_name=db_partner.trading_name,
+            owner_name=db_partner.owner_name,
+            document=db_partner.document,
+            coverage_area=mapping(to_shape(db_partner.coverage_area)),
+            address=mapping(to_shape(db_partner.address)),
+        )

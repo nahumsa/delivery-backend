@@ -3,7 +3,6 @@ from backend.main import app, get_partner_repository
 from backend.schemas import PartnerCreate
 from backend.models import PartnerModel
 from sqlalchemy.exc import IntegrityError
-from geoalchemy2.elements import WKTElement
 
 
 client = TestClient(app)
@@ -102,9 +101,9 @@ def test_create_partner_unexpected_error():
     def get_test_partner_repository_with_unexpected_error():
         return TestPartnerRepositoryWithUnexpectedError()
 
-    app.dependency_overrides[
-        get_partner_repository
-    ] = get_test_partner_repository_with_unexpected_error
+    app.dependency_overrides[get_partner_repository] = (
+        get_test_partner_repository_with_unexpected_error
+    )
 
     response = client.post(
         "/partners/",
