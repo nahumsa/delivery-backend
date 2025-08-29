@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-from pydantic import computed_field
+from pydantic import ConfigDict, computed_field
 
 
 class Settings(BaseSettings):
@@ -14,8 +14,6 @@ class Settings(BaseSettings):
     def database_url(self) -> str:
         return f"postgresql://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"
 
-    class Config:
-        env_file = ".env"
 
 
 settings = Settings()  # type: ignore

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from geojson_pydantic.geometries import Point, MultiPolygon
 
 
@@ -15,10 +15,9 @@ class PartnerCreate(PartnerBase):
 
 
 class Partner(PartnerBase):
-    id: int
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        orm_mode = True
+    id: int
 
 
 class PartnerSearch(BaseModel):
