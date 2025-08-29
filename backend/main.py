@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi import status
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 import schemas
 import database
 from repositories import PartnerRepository
@@ -9,10 +10,8 @@ from repositories import PartnerRepository
 
 app = FastAPI()
 
-db = database.get_db()
 
-
-def get_partner_repository() -> PartnerRepository:
+def get_partner_repository(db: Session = Depends(database.get_db)) -> PartnerRepository:
     return PartnerRepository(db)
 
 
