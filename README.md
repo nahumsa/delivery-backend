@@ -88,4 +88,3 @@ make test
 - `Makefile`: Contains convenient commands for running the application and tests.
 - `pyproject.toml`: Project dependencies and metadata.
 - `uv.lock`: Lock file for `uv` to ensure reproducible builds.
-

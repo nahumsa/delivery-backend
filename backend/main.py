@@ -3,15 +3,15 @@ from fastapi import status
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-import schemas
-import database
+from schemas import Partner, PartnerCreate
+from database import get_db
 from repositories import PartnerRepository
 
 
 app = FastAPI()
 
 
-def get_partner_repository(db: Session = Depends(database.get_db)) -> PartnerRepository:
+def get_partner_repository(db: Session = Depends(get_db)) -> PartnerRepository:
     return PartnerRepository(db)
 
 
@@ -20,9 +20,9 @@ def read_root():
     return
 
 
-@app.post("/partners/", response_model=schemas.Partner)
+@app.post("/partners/", response_model=Partner)
 def create_partner(
-    partner: schemas.PartnerCreate,
+    partner: PartnerCreate,
     partner_repo: PartnerRepository = Depends(get_partner_repository),
 ):
     try:
