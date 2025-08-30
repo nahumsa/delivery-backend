@@ -52,3 +52,15 @@ def get_partner(
     if db_partner is None:
         raise HTTPException(status_code=404, detail="Partner not found")
     return db_partner
+
+
+@app.get("/partners", response_model=Partner)
+def search_partner(
+    long: float,
+    lat: float,
+    partner_repo: PartnerRepository = Depends(get_partner_repository),
+):
+    db_partner = partner_repo.search_nearest_by_location(long, lat)
+    if db_partner is None:
+        raise HTTPException(status_code=404, detail="Partner not found")
+    return db_partner

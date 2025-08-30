@@ -52,6 +52,32 @@ class TestPartnerRepository:
             )
         return None
 
+    def search_nearest_by_location(
+        self, longitude: float, latitude: float
+    ) -> PartnerModel | None:
+        if longitude == -46.57421 and latitude == -21.785741:
+            return PartnerModel(
+                id=1,
+                trading_name="Adega da Cerveja - Pinheiros",
+                owner_name="Zé da Silva",
+                document="12345678901235",
+                coverage_area={
+                    "type": "MultiPolygon",
+                    "coordinates": [
+                        [
+                            [
+                                [-46.57421, -21.785741],
+                                [-46.57421, -21.785741],
+                                [-46.57421, -21.785741],
+                                [-46.57421, -21.785741],
+                            ]
+                        ]
+                    ],
+                },
+                address={"type": "Point", "coordinates": [-46.57421, -21.785741]},
+            )
+        return None
+
 
 def get_test_partner_repository():
     return TestPartnerRepository()
@@ -173,5 +199,21 @@ def test_get_partner(client_with_mock_repo):
 
 def test_get_partner_not_found(client_with_mock_repo):
     response = client_with_mock_repo.get("/partners/2")
+    assert response.status_code == 404
+    assert "Partner not found" in response.json()["detail"]
+
+
+def test_search_partner(client_with_mock_repo):
+    response = client_with_mock_repo.get("/partners?long=-46.57421&lat=-21.785741")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == 1
+    assert data["trading_name"] == "Adega da Cerveja - Pinheiros"
+    assert data["owner_name"] == "Zé da Silva"
+    assert data["document"] == "12345678901235"
+
+
+def test_search_partner_not_found(client_with_mock_repo):
+    response = client_with_mock_repo.get("/partners?long=1.1&lat=1.1")
     assert response.status_code == 404
     assert "Partner not found" in response.json()["detail"]

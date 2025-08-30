@@ -56,3 +56,27 @@ class PartnerRepository:
             coverage_area=mapping(to_shape(db_partner.coverage_area)), # type: ignore
             address=mapping(to_shape(db_partner.address)), # type: ignore
         )
+
+    def search_nearest_by_location(
+        self, longitude: float, latitude: float
+    ) -> Partner | None:
+        location = WKTElement(f"POINT({longitude} {latitude})", srid=4326)
+
+        db_partner = (
+            self.db.query(PartnerModel)
+            .filter(PartnerModel.coverage_area.ST_Contains(location))
+            .order_by(PartnerModel.address.ST_Distance(location))
+            .first()
+        )
+
+        if db_partner is None:
+            return None
+
+        return Partner(
+            id=db_partner.id,
+            trading_name=db_partner.trading_name,
+            owner_name=db_partner.owner_name,
+            document=db_partner.document,  # type: ignore
+            coverage_area=mapping(to_shape(db_partner.coverage_area)),  # type: ignore
+            address=mapping(to_shape(db_partner.address)),  # type: ignore
+        )
