@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
+      # This can be removed because we
+      # added mocks
       postgres:
         image: postgis/postgis:13-3.4
         env:
@@ -50,4 +52,3 @@ jobs:
           DB_PORT: 5432
           DB_NAME: gis_db
         run: uv run pytest
-
