@@ -41,3 +41,14 @@ def create_partner(
         )
 
     return db_partner
+
+
+@app.get("/partners/{partner_id}", response_model=Partner)
+def get_partner(
+    partner_id: int,
+    partner_repo: PartnerRepository = Depends(get_partner_repository),
+):
+    db_partner = partner_repo.get_by_id(partner_id)
+    if db_partner is None:
+        raise HTTPException(status_code=404, detail="Partner not found")
+    return db_partner

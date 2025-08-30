@@ -39,3 +39,20 @@ class PartnerRepository:
             coverage_area=mapping(to_shape(db_partner.coverage_area)),  # type: ignore
             address=mapping(to_shape(db_partner.address)),  # type: ignore
         )
+
+    def get_by_id(self, partner_id: int) -> Partner | None:
+        db_partner = (
+            self.db.query(PartnerModel).filter(PartnerModel.id == partner_id).first()
+        )
+
+        if db_partner is None:
+            return None
+
+        return Partner(
+            id=db_partner.id,
+            trading_name=db_partner.trading_name,
+            owner_name=db_partner.owner_name,
+            document=db_partner.document, # type: ignore
+            coverage_area=mapping(to_shape(db_partner.coverage_area)), # type: ignore
+            address=mapping(to_shape(db_partner.address)), # type: ignore
+        )
