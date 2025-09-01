@@ -33,6 +33,7 @@ This project is a FastAPI-based backend application for managing delivery partne
 - **SQLAlchemy:** Python SQL toolkit and Object Relational Mapper.
 - **GeoAlchemy2:** Extends SQLAlchemy to work with spatial databases like PostGIS.
 - **PostgreSQL/PostGIS:** Relational database with spatial capabilities.
+- **Redis:** Added for caching.
 - **Pydantic:** Data validation and settings management.
 - **Pytest:** Testing framework.
 - **Docker & Docker Compose:** For containerization and orchestration of services.
