@@ -1,5 +1,3 @@
-# Delivery Backend
-
 <h1 align="center">Delivery App Backend</h1>
 <p align="center">
 <a href="https://github.com/nahumsa/delivery-backend/actions"><img alt="Actions Status" src="https://github.com/nahumsa/delivery-backend/actions/workflows/ci.yml/badge.svg"></a>
