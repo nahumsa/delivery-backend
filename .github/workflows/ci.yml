@@ -51,4 +51,5 @@ jobs:
           DB_HOST: localhost
           DB_PORT: 5432
           DB_NAME: gis_db
+          REDIS_HOST: localhost
         run: uv run pytest

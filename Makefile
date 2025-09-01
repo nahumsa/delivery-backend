@@ -11,6 +11,8 @@ help:
 	@echo "  make test   - Run Python tests"
 	@echo "  make run    - Run the FastAPI application"
 
+fmt:
+	uv run black .
 
 test:
 	@echo "Running Python tests..."
