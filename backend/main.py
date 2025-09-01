@@ -1,3 +1,5 @@
+import redis
+import logging
 from fastapi import FastAPI, Depends
 from fastapi import status
 from fastapi import HTTPException
@@ -6,9 +8,17 @@ from sqlalchemy.orm import Session
 from schemas import Partner, PartnerCreate
 from database import get_db
 from repositories import PartnerRepository
+from config import settings
+import pygeohash
+from logging_config import LogConfig
 
+
+
+LogConfig.setup_logging()
 
 app = FastAPI()
+
+redis_client = redis.Redis(host=settings.redis_host, port=6379, db=0)
 
 
 def get_partner_repository(db: Session = Depends(get_db)) -> PartnerRepository:
@@ -48,9 +58,24 @@ def get_partner(
     partner_id: int,
     partner_repo: PartnerRepository = Depends(get_partner_repository),
 ):
+    logging.info(f"Fetching partner for id: {partner_id}")
+    cached_partner = redis_client.get(f"partner_{partner_id}")
+
+    if cached_partner:
+        logging.info(f"Partner found in cache for id: {partner_id}")
+        return Partner.model_validate_json(cached_partner)
+
+    logging.info(f"Partner not found in cache for id: {partner_id}, fetching from db")
     db_partner = partner_repo.get_by_id(partner_id)
     if db_partner is None:
+        logging.error(f"Partner not found for id: {partner_id}")
         raise HTTPException(status_code=404, detail="Partner not found")
+
+    logging.info(f"Partner found in db for id: {partner_id}, caching result")
+    redis_client.set(
+        f"partner_{partner_id}", db_partner.model_dump_json(), ex=3600
+    )
+
     return db_partner
 
 
@@ -60,7 +85,23 @@ def search_partner(
     lat: float,
     partner_repo: PartnerRepository = Depends(get_partner_repository),
 ):
+
+    geohash = pygeohash.encode(latitude=lat, longitude=long)
+
+    logging.info(f"Fetching partner for geohash: {geohash}")
+    cached_partner = redis_client.get(f"partner_{geohash}")
+
+    if cached_partner:
+        logging.info(f"Fetching partner for geohash: {geohash}")
+        return Partner.model_validate_json(cached_partner)
+
     db_partner = partner_repo.search_nearest_by_location(long, lat)
     if db_partner is None:
         raise HTTPException(status_code=404, detail="Partner not found")
+
+    logging.info(f"Partner found in db for geohash: {geohash}, caching result")
+    redis_client.set(
+        f"partner_{geohash}", db_partner.model_dump_json(), ex=3600
+    )
+
     return db_partner

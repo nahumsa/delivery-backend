@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     db_host: str
     db_port: int
     db_name: str
+    redis_host: str
 
     @computed_field
     @property

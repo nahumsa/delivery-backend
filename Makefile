@@ -1,7 +1,7 @@
 .PHONY: test help run
 
 # Database environment variables for testing
-DB_VARS := DB_USER=user DB_PASSWORD=password DB_HOST=localhost DB_PORT=5432 DB_NAME=gis_db
+DB_VARS := DB_USER=user DB_PASSWORD=password DB_HOST=localhost DB_PORT=5432 DB_NAME=gis_db REDIS_HOST=locahost
 
 # Default target
 all: help
