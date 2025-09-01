@@ -1,3 +1,4 @@
+from geojson_pydantic.geometries import MultiPolygon, Point
 import pytest
 from fastapi.testclient import TestClient
 from backend.main import app, get_partner_repository, get_cache_repository
@@ -60,8 +61,8 @@ class TestPartnerRepository:
                             ]
                         ]
                     ],
-                },
-                address={"type": "Point", "coordinates": [-46.57421, -21.785741]},
+                }, # type: ignore
+                address={"type": "Point", "coordinates": [-46.57421, -21.785741]}, # type: ignore
             )
         return None
 
@@ -86,8 +87,8 @@ class TestPartnerRepository:
                             ]
                         ]
                     ],
-                },
-                address={"type": "Point", "coordinates": [-46.57421, -21.785741]},
+                }, # type: ignore
+                address={"type": "Point", "coordinates": [-46.57421, -21.785741]}, # type: ignore
             )
         return None
 
