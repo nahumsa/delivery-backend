@@ -1,13 +1,31 @@
 # Delivery Backend
 
+<h1 align="center">Delivery App Backend</h1>
+<p align="center">
+<a href="https://github.com/nahumsa/delivery-backend/actions"><img alt="Actions Status" src="https://github.com/nahumsa/delivery-backend/actions/workflows/ci.yaml/badge.svg"></a>
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+<a href="https://pycqa.github.io/isort/"><img alt="Imports: isort" src="https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336"></a>
+<a href="https://github.com/astral-sh/ruff"><img alt="Ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json"></a>
+</p>
+
 This project is a FastAPI-based backend application for managing delivery partners, incorporating geographic data using PostGIS.
 
 ## Features
 
 - **Partner Management:** Create and retrieve delivery partner information.
-- **Geographic Data:** Utilizes PostGIS for handling coverage areas (MultiPolygon) and addresses (Point).
-- **Database Integration:** Uses SQLAlchemy for ORM with PostgreSQL.
-- **API Endpoints:** Provides RESTful API endpoints for interaction.
+- **Geographic Search:** Search for the nearest partner based on a given longitude and latitude.
+- **Caching:** Uses Redis to cache partner data for faster responses.
+- **Database Integration:** Uses SQLAlchemy and GeoAlchemy2 for ORM with PostgreSQL/PostGIS.
+- **API Endpoints:** Provides RESTful API endpoints for creating, retrieving, and searching for partners.
+- **Health Check:** A dedicated endpoint to check the health of the application.
+- **Caching:** All requests are cached to improve performance. It has been used Geohash to cache the latitude and longitude for the search of partners.
+
+## API Endpoints
+
+- `POST /partners/`: Creates a new partner.
+- `GET /partners/{partner_id}`: Retrieves a partner by ID.
+- `GET /partners`: Searches for the nearest partner by longitude and latitude.
+- `GET /health`: Health check endpoint.
 
 ## Technologies Used
 
@@ -78,13 +96,3 @@ To run the tests, ensure your database is running via Docker Compose and then us
 ```bash
 make test
 ```
-
-## Project Structure
-
-- `backend/`: Contains the FastAPI application code, including `main.py`, `models.py`, `database.py`, and `config.py`.
-- `database/`: Contains the Dockerfile for the PostgreSQL/PostGIS database.
-- `tests/`: Contains unit and integration tests for the application.
-- `.github/workflows/`: Contains GitHub Actions workflow for CI/CD.
-- `Makefile`: Contains convenient commands for running the application and tests.
-- `pyproject.toml`: Project dependencies and metadata.
-- `uv.lock`: Lock file for `uv` to ensure reproducible builds.

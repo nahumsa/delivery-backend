@@ -1,16 +1,15 @@
 import logging
-from fastapi import FastAPI, Depends
-from fastapi import status
-from fastapi import HTTPException
+
+import pygeohash
+from cache_repository import CacheRepository
+from fastapi import Depends, FastAPI, HTTPException, status
+from logging_config import LogConfig
+from repositories import PartnerRepository
+from schemas import Partner, PartnerCreate
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-from schemas import Partner, PartnerCreate
-from database import get_db
-from repositories import PartnerRepository
-from cache_repository import CacheRepository
-import pygeohash
-from logging_config import LogConfig
 
+from database import get_db
 
 LogConfig.setup_logging()
 

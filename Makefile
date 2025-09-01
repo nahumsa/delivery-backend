@@ -12,7 +12,14 @@ help:
 	@echo "  make run    - Run the FastAPI application"
 
 fmt:
+	uv run isort .
 	uv run black .
+	uv run ruff check --fix .
+
+check_style:
+	uv run isort --check --diff .
+	uv run black --check --diff .
+	uv run ruff check .
 
 test:
 	@echo "Running Python tests..."

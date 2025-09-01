@@ -1,5 +1,5 @@
+from geojson_pydantic.geometries import MultiPolygon, Point
 from pydantic import BaseModel, ConfigDict
-from geojson_pydantic.geometries import Point, MultiPolygon
 
 
 class PartnerBase(BaseModel):

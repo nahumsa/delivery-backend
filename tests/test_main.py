@@ -1,10 +1,12 @@
+from unittest.mock import MagicMock
+
 import pytest
 from fastapi.testclient import TestClient
-from backend.main import app, get_partner_repository, get_cache_repository
-from backend.schemas import PartnerCreate, Partner
-from backend.models import PartnerModel
 from sqlalchemy.exc import IntegrityError
-from unittest.mock import MagicMock
+
+from backend.main import app, get_cache_repository, get_partner_repository
+from backend.models import PartnerModel
+from backend.schemas import Partner, PartnerCreate
 
 
 @pytest.fixture

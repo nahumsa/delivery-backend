@@ -19,10 +19,19 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["black>=25.1.0", "pytest>=8.3.2"]
+dev = [
+    "black>=25.1.0",
+    "isort>=6.0.1",
+    "pytest>=8.3.2",
+    "ruff>=0.12.11",
+]
 
 [tool.pytest.ini_options]
 pythonpath = [".", "backend"]
 
 [tool.pyright]
 extraPaths = ["backend"]
+
+[tool.isort]
+profile = "black"
+case_sensitive = true

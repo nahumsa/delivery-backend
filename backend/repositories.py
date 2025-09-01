@@ -1,10 +1,10 @@
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.shape import to_shape
-from shapely.geometry import mapping
 from models import PartnerModel
-from schemas import PartnerCreate, Partner
+from schemas import Partner, PartnerCreate
+from shapely.geometry import mapping
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 
 class PartnerRepository:
