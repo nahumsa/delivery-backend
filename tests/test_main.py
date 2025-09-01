@@ -1,4 +1,3 @@
-from geojson_pydantic.geometries import MultiPolygon, Point
 import pytest
 from fastapi.testclient import TestClient
 from backend.main import app, get_partner_repository, get_cache_repository
@@ -31,7 +30,7 @@ class TestPartnerRepository:
     def create(self, partner: PartnerCreate) -> PartnerModel:
         if partner.document == "12345678901234":
             raise IntegrityError(
-                "duplicate key value violates unique constraint", "params", "orig" # type: ignore
+                "duplicate key value violates unique constraint", "params", "orig"  # type: ignore
             )
         return PartnerModel(
             id=1,
@@ -61,8 +60,8 @@ class TestPartnerRepository:
                             ]
                         ]
                     ],
-                }, # type: ignore
-                address={"type": "Point", "coordinates": [-46.57421, -21.785741]}, # type: ignore
+                },  # type: ignore
+                address={"type": "Point", "coordinates": [-46.57421, -21.785741]},  # type: ignore
             )
         return None
 
@@ -87,14 +86,15 @@ class TestPartnerRepository:
                             ]
                         ]
                     ],
-                }, # type: ignore
-                address={"type": "Point", "coordinates": [-46.57421, -21.785741]}, # type: ignore
+                },  # type: ignore
+                address={"type": "Point", "coordinates": [-46.57421, -21.785741]},  # type: ignore
             )
         return None
 
 
 def get_test_partner_repository():
     return TestPartnerRepository()
+
 
 def get_test_cache_repository():
     return MockCacheRepository()
@@ -165,7 +165,7 @@ def test_create_partner_duplicate_document(client_with_mock_repo):
 def test_create_partner_unexpected_error(client_with_mock_repo):
     class TestPartnerRepositoryWithUnexpectedError:
         def create(self, partner: PartnerCreate) -> PartnerModel:
-            raise IntegrityError("some unexpected error", "params", "orig") # type: ignore
+            raise IntegrityError("some unexpected error", "params", "orig")  # type: ignore
 
     def get_test_partner_repository_with_unexpected_error():
         return TestPartnerRepositoryWithUnexpectedError()

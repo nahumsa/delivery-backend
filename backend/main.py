@@ -16,6 +16,7 @@ LogConfig.setup_logging()
 
 app = FastAPI()
 
+
 def get_cache_repository() -> CacheRepository:
     return CacheRepository()
 
@@ -72,9 +73,7 @@ def get_partner(
         raise HTTPException(status_code=404, detail="Partner not found")
 
     logging.info(f"Partner found in db for id: {partner_id}, caching result")
-    cache_repo.set(
-        f"partner_{partner_id}", db_partner.model_dump(), 3600
-    )
+    cache_repo.set(f"partner_{partner_id}", db_partner.model_dump(), 3600)
 
     return db_partner
 
@@ -101,8 +100,6 @@ def search_partner(
         raise HTTPException(status_code=404, detail="Partner not found")
 
     logging.info(f"Partner found in db for geohash: {geohash}, caching result")
-    cache_repo.set(
-        f"partner_{geohash}", db_partner.model_dump(), 3600
-    )
+    cache_repo.set(f"partner_{geohash}", db_partner.model_dump(), 3600)
 
     return db_partner

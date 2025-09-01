@@ -52,9 +52,9 @@ class PartnerRepository:
             id=db_partner.id,
             trading_name=db_partner.trading_name,
             owner_name=db_partner.owner_name,
-            document=db_partner.document, # type: ignore
-            coverage_area=mapping(to_shape(db_partner.coverage_area)), # type: ignore
-            address=mapping(to_shape(db_partner.address)), # type: ignore
+            document=db_partner.document,  # type: ignore
+            coverage_area=mapping(to_shape(db_partner.coverage_area)),  # type: ignore
+            address=mapping(to_shape(db_partner.address)),  # type: ignore
         )
 
     def search_nearest_by_location(
