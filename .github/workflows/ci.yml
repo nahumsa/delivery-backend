@@ -44,6 +44,9 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
+      - name: Check formatting
+        run: make check_style
+
       - name: Run tests
         env:
           DB_USER: user
